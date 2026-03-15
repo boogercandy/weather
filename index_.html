@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>신비의 계양 꽃길 가이드</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background: #fffcf9;
+            margin: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #444;
+        }
+
+        .app-container {
+            width: 92%;
+            max-width: 420px;
+            background: white;
+            border-radius: 35px;
+            padding: 35px 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            border: 1px solid #f0f0f0;
+        }
+
+        .weather-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .weather-title span {
+            color: #ff4d6d;
+        }
+
+        .weather-ment {
+            font-size: 0.95rem;
+            color: #777;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+
+        .image-card-container {
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            background: #eee;
+        }
+
+        .image-card-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .recommend-box {
+            background: #fff5f6;
+            border-radius: 30px;
+            padding: 25px;
+            position: relative;
+            border: 1px solid #ffe4e6;
+        }
+
+        .flower-badge {
+            background: #ff9a9e;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 10px rgba(255, 154, 158, 0.2);
+            white-space: nowrap;
+        }
+
+        .place-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ff4d6d;
+            margin: 10px 0;
+        }
+
+        .detail-btn {
+            background: white;
+            border: 1px solid #ff9a9e;
+            color: #ff9a9e;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .detail-btn:hover {
+            background: #ff9a9e;
+            color: white;
+        }
+
+        .detail-content {
+            display: none;
+            margin-top: 18px;
+            font-size: 0.92rem;
+            color: #666;
+            line-height: 1.7;
+            text-align: left;
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #f0f0f0;
+            word-break: keep-all;
+        }
+
+        .status-info {
+            margin-top: 25px;
+            font-size: 0.82rem;
+            color: #ff7b8f;
+            font-weight: 700;
+        }
+
+        .footer {
+            margin-top: 35px;
+            font-size: 0.72rem;
+            color: #c8c8c8;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="weather-title">
+            계양구의 현재 날씨는 <span id="temp-val">--°</span>
+        </div>
+
+        <div id="ment" class="weather-ment">
+            오늘의 꽃길을 불러오고 있어요. 🌸
+        </div>
+
+        <div class="image-card-container">
+            <img id="flower-img" src="" alt="오늘의 꽃 명소 이미지" />
+        </div>
+
+        <div class="recommend-box">
+            <div id="flower-name" class="flower-badge">LOADING</div>
+            <div id="place-name" class="place-title">추천 명소</div>
+
+            <button class="detail-btn" onclick="toggleDetail()">
+                🌸 신비의 꽃길 가이드 보기
+            </button>
+
+            <div id="detail-text" class="detail-content"></div>
+        </div>
+
+        <div id="flower-status" class="status-info">계절 꽃 추천 준비 중 🌸</div>
+        <div class="footer">계양구청 홍보미디어실 홍보팀</div>
+    </div>
+
+    <script>
+        const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
+
+        const flowerDB = [
+            {
+                name: "수선화",
+                place: "계양아라온",
+                img: "flower_01_daffodil.png",
+                guide: "계양아라온의 노란 수선화 꽃길은 봄의 시작을 가장 먼저 알려줘요. 시원한 바람을 맞으며 걷다 보면 기분까지 환해져요. 🌼"
+            },
+            {
+                name: "진달래",
+                place: "계양산",
+                img: "flower_02_azalea.png",
+                guide: "계양산을 분홍빛으로 물들이는 진달래의 계절이에요. 봄 산책의 설렘을 느끼고 싶다면 계양산으로 가보세요. ⛰️"
+            },
+            {
+                name: "벚꽃",
+                place: "서부간선수로 등",
+                img: "flower_03_cherryblossom.png",
+                guide: "흩날리는 벚꽃잎과 함께 걷는 수로길은 봄날 영화 같은 풍경을 보여줘요. 4월 초의 주인공 같은 꽃길이에요. 🌸"
+            },
+            {
+                name: "장미",
+                place: "계양산 장미원",
+                img: "flower_04_rose.png",
+                guide: "화사한 장미가 가득한 장미원에서 향기로운 초여름 산책을 즐겨보세요. 🌹"
+            },
+            {
+                name: "백일홍",
+                place: "계양아라온",
+                img: "flower_05_zinnia.png",
+                guide: "여름 햇살 아래 피어난 백일홍이 계양아라온을 한층 더 화사하게 물들여줘요. 🌺"
+            },
+            {
+                name: "백합",
+                place: "계양아라온",
+                img: "flower_06_lily.png",
+                guide: "은은한 향기의 백합이 계양아라온 산책길을 가득 채워줘요. 여름 초입의 매력을 느껴보세요. 🤍"
+            },
+            {
+                name: "맥문동",
+                place: "서부간선수로 등",
+                img: "flower_07_liliope.png",
+                guide: "보랏빛 맥문동이 길가를 신비롭게 물들이는 계절이에요. 한여름의 특별한 색감을 만나보세요. 💜"
+            },
+            {
+                name: "국화",
+                place: "계양아라온",
+                img: "flower_08_mums.png",
+                guide: "가을의 정취를 가득 담은 국화가 아라온 산책길을 더욱 풍성하게 만들어줘요. 🌼"
+            }
+        ];
+
+        function getFlowerByName(name) {
+            return flowerDB.find(flower => flower.name === name) || flowerDB[0];
+        }
+
+        function getSeasonalPool(month, day) {
+            if (month === 3) {
+                if (day <= 15) {
+                    return ["수선화", "수선화", "진달래"];
+                }
+                return ["수선화", "진달래", "수선화", "진달래"];
+            }
+
+            if (month === 4) {
+                if (day <= 10) {
+                    return ["벚꽃", "벚꽃", "진달래"];
+                }
+                if (day <= 20) {
+                    return ["벚꽃", "벚꽃", "진달래"];
+                }
+                return ["벚꽃", "진달래"];
+            }
+
+            if (month === 5) {
+                return ["장미"];
+            }
+
+            if (month === 6) {
+                return ["장미", "백합", "장미"];
+            }
+
+            if (month === 7) {
+                return ["백일홍", "백합", "백일홍"];
+            }
+
+            if (month === 8) {
+                return ["백일홍", "맥문동", "백일홍"];
+            }
+
+            if (month === 9) {
+                return ["백일홍", "국화", "국화"];
+            }
+
+            if (month === 10 || month === 11) {
+                return ["국화"];
+            }
+
+            return ["수선화"];
+        }
+
+        function getWeatherMent(temp, pty) {
+            if (pty && pty !== "0") {
+                return "비 소식이 있어요. 우산 챙기고 가까운 꽃길을 가볍게 둘러보세요 ☔";
+            }
+
+            if (temp <= 5) {
+                return "아직 꽃도 움츠린 날씨예요. 따뜻하게 입고 산책하세요 🧣";
+            } else if (temp <= 12) {
+                return "조금 쌀쌀하지만 꽃길 산책은 충분히 즐길 수 있어요 🌿";
+            } else if (temp <= 20) {
+                return "꽃길 걷기 딱 좋은 날씨예요 🌸";
+            } else if (temp <= 27) {
+                return "나들이 가기 정말 좋은 날이에요. 꽃 보러 가기 딱 좋아요 🌼";
+            } else {
+                return "조금 더운 날씨예요. 그늘이 있는 꽃길 산책을 추천해요 ☀️";
+            }
+        }
+
+        function pickFlower(month, day, weather = {}) {
+            let pool = getSeasonalPool(month, day);
+
+            if (month === 4 && day <= 10) {
+                pool = pool.filter(name => name !== "수선화");
+            }
+
+            if (weather.pty && weather.pty !== "0") {
+                pool = pool.map(name => {
+                    if (name === "진달래") {
+                        return "벚꽃";
+                    }
+                    return name;
+                });
+            }
+
+            const selectedName = pool[(day - 1) % pool.length];
+            return getFlowerByName(selectedName);
+        }
+
+        function renderFlower(flower) {
+            document.getElementById("flower-name").innerText = flower.name;
+            document.getElementById("place-name").innerText = flower.place;
+            document.getElementById("flower-img").src = "./" + flower.img;
+            document.getElementById("flower-img").alt = flower.name + " 명소 이미지";
+            document.getElementById("detail-text").innerText = flower.guide;
+            document.getElementById("flower-status").innerText = `${flower.name} 추천 중 🌸`;
+        }
+
+        function getBaseDateAndTime() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, "0");
+            const d = String(now.getDate()).padStart(2, "0");
+            const hhmm = Number(
+                String(now.getHours()).padStart(2, "0") +
+                String(now.getMinutes()).padStart(2, "0")
+            );
+
+            let baseDate = `${y}${m}${d}`;
+            let baseTime = "0500";
+
+            if (hhmm >= 2300) baseTime = "2300";
+            else if (hhmm >= 2000) baseTime = "2000";
+            else if (hhmm >= 1700) baseTime = "1700";
+            else if (hhmm >= 1400) baseTime = "1400";
+            else if (hhmm >= 1100) baseTime = "1100";
+            else if (hhmm >= 800) baseTime = "0800";
+            else if (hhmm >= 500) baseTime = "0500";
+            else if (hhmm >= 200) baseTime = "0200";
+            else {
+                const yesterday = new Date(now);
+                yesterday.setDate(now.getDate() - 1);
+
+                baseDate =
+                    yesterday.getFullYear() +
+                    String(yesterday.getMonth() + 1).padStart(2, "0") +
+                    String(yesterday.getDate()).padStart(2, "0");
+                baseTime = "2300";
+            }
+
+            return { baseDate, baseTime };
+        }
+
+        async function loadApp() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+
+            let flower = pickFlower(month, day);
+            renderFlower(flower);
+
+            try {
+                const { baseDate, baseTime } = getBaseDateAndTime();
+
+                const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=60&pageNo=1&base_date=${baseDate}&base_time=${baseTime}&nx=54&ny=126`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                const items = data?.response?.body?.items?.item || [];
+                const tempItem = items.find(item => item.category === "TMP");
+                const ptyItem = items.find(item => item.category === "PTY");
+
+                const weather = {
+                    temp: tempItem ? Number(tempItem.fcstValue) : null,
+                    pty: ptyItem ? ptyItem.fcstValue : "0"
+                };
+
+                flower = pickFlower(month, day, weather);
+                renderFlower(flower);
+
+                if (weather.temp !== null) {
+                    document.getElementById("temp-val").innerText = `${weather.temp}°`;
+                    document.getElementById("ment").innerText = getWeatherMent(weather.temp, weather.pty);
+                } else {
+                    document.getElementById("ment").innerText =
+                        "기온 정보를 찾지 못했지만, 오늘의 꽃길은 안내해드릴게요 🌸";
+                }
+            } catch (error) {
+                document.getElementById("ment").innerText =
+                    "날씨 정보를 불러오지 못했지만, 계절에 맞는 꽃길을 추천해드릴게요 🌸";
+            }
+        }
+
+        function toggleDetail() {
+            const detail = document.getElementById("detail-text");
+            detail.style.display = detail.style.display === "block" ? "none" : "block";
+        }
+
+        loadApp();
+    </script>
+</body>
+</html>
