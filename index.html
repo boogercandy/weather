@@ -6,129 +6,54 @@
     <title>신비의 계양 꽃길 가이드</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-
         * { box-sizing: border-box; }
-        body {
-            font-family: 'Pretendard', sans-serif;
-            background: #fffcf9;
-            margin: 0;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            color: #444;
-        }
+        body { font-family: 'Pretendard', sans-serif; background: #fffcf9; margin: 0; padding: 20px 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #444; }
 
-        .app-container {
-            width: 92%;
-            max-width: 420px;
-            background: white;
-            border-radius: 35px;
-            padding: 35px 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
-            text-align: center;
-            border: 1px solid #f0f0f0;
-        }
+        .app-container { width: 92%; max-width: 420px; background: white; border-radius: 35px; padding: 35px 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); text-align: center; border: 1px solid #f0f0f0; }
+        
+        /* 실시간 정보 영역 */
+        .weather-info { margin-bottom: 20px; }
+        .temp-main { font-size: 2.2rem; font-weight: 800; color: #333; }
+        .temp-main span { font-size: 1.2rem; color: #ff4d6d; }
+        
+        .badge-container { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+        .info-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; color: white; }
+        .bg-uv { background: #ff9f43; }
+        .bg-score { background: #10ac84; }
 
-        .weather-title { font-size: 1.3rem; font-weight: 700; color: #333; margin-bottom: 8px; }
-        .weather-title span { color: #ff4d6d; }
-        .weather-ment { font-size: 0.95rem; color: #777; margin-bottom: 24px; line-height: 1.6; word-break: keep-all; }
+        .weather-ment { font-size: 0.95rem; color: #666; margin: 15px 0 25px; line-height: 1.6; word-break: keep-all; min-height: 3em; }
 
-        .image-card-container {
-            width: 100%;
-            aspect-ratio: 2 / 1;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            background: #fdf2f4;
-        }
+        /* 이미지 및 카드 */
+        .image-card-container { width: 100%; aspect-ratio: 2 / 1; border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); background: #fdf2f4; }
+        .image-card-container img { width: 100%; height: 100%; object-fit: cover; }
 
-        .image-card-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-        .recommend-box {
-            background: #fff5f6;
-            border-radius: 30px;
-            padding: 25px;
-            position: relative;
-            border: 1px solid #ffe4e6;
-        }
-
-        .flower-badge {
-            background: #ff9a9e;
-            color: white;
-            padding: 6px 18px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 4px 10px rgba(255, 154, 158, 0.2);
-            white-space: nowrap;
-        }
-
+        .recommend-box { background: #fff5f6; border-radius: 30px; padding: 25px; position: relative; border: 1px solid #ffe4e6; }
+        .flower-badge { background: #ff9a9e; color: white; padding: 6px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); box-shadow: 0 4px 10px rgba(255,154,158,0.2); }
         .place-title { font-size: 1.6rem; font-weight: 800; color: #ff4d6d; margin: 10px 0; }
         
-        .detail-btn {
-            background: white;
-            border: 1px solid #ff9a9e;
-            color: #ff9a9e;
-            padding: 10px 22px;
-            border-radius: 50px;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-        .detail-btn:hover { background: #ff9a9e; color: white; }
-
-        .detail-content {
-            display: none;
-            margin-top: 18px;
-            font-size: 0.92rem;
-            color: #666;
-            line-height: 1.7;
-            text-align: left;
-            background: #fff;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid #f0f0f0;
-            word-break: keep-all;
-        }
-
-        /* 네이버 지도 버튼 스타일 */
-        .map-link-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin-top: 15px;
-            padding: 12px;
-            background: #03C75A;
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            transition: 0.2s;
-        }
-        .map-link-btn:active { opacity: 0.8; transform: scale(0.98); }
-
+        .detail-btn { background: white; border: 1px solid #ff9a9e; color: #ff9a9e; padding: 10px 22px; border-radius: 50px; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .detail-content { display: none; margin-top: 18px; font-size: 0.92rem; color: #666; line-height: 1.7; text-align: left; background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #f0f0f0; }
+        
+        .map-link-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; margin-top: 15px; padding: 12px; background: #03C75A; color: white; text-decoration: none; border-radius: 12px; font-size: 0.85rem; font-weight: 700; }
+        
         .status-info { margin-top: 25px; font-size: 0.82rem; color: #ff7b8f; font-weight: 700; }
-        .footer { margin-top: 35px; font-size: 0.72rem; color: #c8c8c8; letter-spacing: 0.5px; }
+        .footer { margin-top: 35px; font-size: 0.72rem; color: #c8c8c8; }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <div class="weather-title">계양구의 현재 날씨는 <span id="temp-val">--°</span></div>
-        <div id="ment" class="weather-ment">오늘의 꽃길을 불러오고 있어요. 🌸</div>
+        <div class="weather-info">
+            <div class="temp-main"><span id="temp-val">--</span>°C</div>
+            <div class="badge-container">
+                <div id="uv-badge" class="info-badge bg-uv">자외선 --</div>
+                <div id="score-badge" class="info-badge bg-score">산책지수 --점</div>
+            </div>
+        </div>
+
+        <div id="ment" class="weather-ment">오늘의 꽃길 데이터 분석 중... 🌸</div>
 
         <div class="image-card-container">
-            <img id="flower-img" src="" alt="꽃 명소 이미지" />
+            <img id="flower-img" src="" alt="꽃 이미지" />
         </div>
 
         <div class="recommend-box">
@@ -138,23 +63,16 @@
             <div id="detail-text" class="detail-content"></div>
         </div>
 
-        <div id="flower-status" class="status-info">계절 꽃 추천 준비 중 🌸</div>
+        <div id="flower-status" class="status-info">시즌 데이터 분석 중... 🌸</div>
         <div class="footer">계양구청 홍보미디어실 홍보팀</div>
     </div>
 
     <script>
-        // 날씨 API 키 (사용자 키 입력 필요)
         const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
+        const AREA_NO = "2824500000"; // 인천 계양구 코드
 
-        // 2026년 예상 개화 시기 (월*100 + 일)
-        const BLOOM_DATES = {
-            DAFFODIL: { start: 315, peak: 322 },   // 수선화: 3/15
-            AZALEA: { start: 323, peak: 330 },     // 진달래: 3/23
-            CHERRY: { start: 401, peak: 408 },     // 벚꽃: 4/1
-            ROSE: { start: 515, peak: 525 }        // 장미: 5/15
-        };
-
-        const flowerDB = [
+        // 꽃 데이터베이스 (생략 없이 취합)
+const flowerDB = [
             { 
                 id: "DAFFODIL", name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", 
                 guide: "계양아라온에 대규모로 식재된 수선화 밭을 본 적 있어? 3월 말이면 끝없이 펼쳐진 노란 수선화가 우리를 반겨줘! 시원한 강바람 맞으며 노란 꽃길을 걷다 보면 기분까지 맑아질 거야. 신비랑 같이 수선화 꽃내음 맡으러 가보자!수향원에서 조금만 더 걸어오면 끝없이 펼쳐진 수선화밭을 만날수있어 😉",
@@ -192,97 +110,101 @@
             },
         ];
 
-        function getFlowerById(id) {
-            return flowerDB.find(f => f.id === id) || flowerDB[4];
+
+        function getFlowerById(id) { return flowerDB.find(f => f.id === id) || flowerDB[6]; }
+
+        // 비율 기반 추천 로직 (하한선 명확히!)
+        function pickFlower(month, day) {
+            const today = month * 100 + day;
+            const seed = day;
+
+            if (today < 315) return { ...getFlowerById("WAITING"), status: "내일의 꽃길을 준비 중이에요 ❄️" };
+            if (today <= 325) { // 3/15~3/25 (진달래 3 : 수선화 1)
+                const f = (seed % 4 === 0) ? getFlowerById("DAFFODIL") : getFlowerById("AZALEA");
+                return { ...f, status: "진달래가 피기 시작한 계양의 봄입니다 ⛰️" };
+            }
+            if (today <= 331) { // 3/26~3/31 (수선화 3 : 진달래 1)
+                const f = (seed % 4 === 0) ? getFlowerById("AZALEA") : getFlowerById("DAFFODIL");
+                return { ...f, status: "노란 수선화 물결이 가장 예쁜 시기예요 🌼" };
+            }
+            if (today <= 415) { // 4/1~4/15 (벚꽃 3 : 수선화 1)
+                const f = (seed % 4 === 0) ? getFlowerById("DAFFODIL") : getFlowerById("CHERRY");
+                return { ...f, status: "벚꽃 팝콘이 팡팡 터지는 중! 🌸" };
+            }
+            if (today < 515) return { ...getFlowerById("WAITING"), status: "장미가 피기를 기다리고 있어요 🌿" };
+            if (today <= 630) return { ...getFlowerById("ROSE"), status: "싱그러운 장미와 함께하는 초여름 🌹" };
+            if (today <= 930 && today >= 825) return { ...getFlowerById("ZINNIA"), status: "아라온에 백일홍이 만개했어요 ❤️" };
+            if (today <= 1110 && today >= 1001) return { ...getFlowerById("MUM"), status: "가을 국화 향기가 가득한 아라온입니다 🍂" };
+            
+            return { ...getFlowerById("WAITING"), status: "올해의 꽃길이 안녕을 고했어요 ❄️" };
         }
 
-function pickFlower(month, day) {
-    const today = month * 100 + day;
-    const seed = day;
+        async function loadApp() {
+            const now = new Date();
+            const ymd = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+            const hour = String(now.getHours()).padStart(2, '0') + "00";
 
-    // 1. [겨울~초봄] 3월 14일 이전
-    if (today < 315) {
-        return { ...getFlowerById("WAITING"), status: "아직은 꽃들을 좀 더 기다려야 해요 ❄️" };
-    }
+            // 1. 기본 꽃 추천
+            const flower = pickFlower(now.getMonth() + 1, now.getDate());
+            renderFlower(flower);
 
-    // 2. [봄 혼합 1] 3월 15일 ~ 3월 25일 (진달래 3 : 수선화 1)
-    else if (today <= 325) {
-        const flower = (seed % 4 === 0) ? getFlowerById("DAFFODIL") : getFlowerById("AZALEA");
-        return { ...flower, status: "진달래와 수선화가 함께 봄 인사를 건네요 ⛰️" };
-    }
+            // 2. 날씨 & 생활지수 동시 호출
+            try {
+                // 단기예보 (기온/PTY)
+                const weatherRes = await fetch(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=10&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`);
+                const weatherData = await weatherRes.json();
+                const temp = weatherData.response.body.items.item.find(i => i.category === "TMP").fcstValue;
+                const pty = weatherData.response.body.items.item.find(i => i.category === "PTY").fcstValue;
 
-    // 3. [봄 혼합 2] 3월 26일 ~ 3월 31일 (수선화 3 : 진달래 1)
-    else if (today <= 331) {
-        const flower = (seed % 4 === 0) ? getFlowerById("AZALEA") : getFlowerById("DAFFODIL");
-        return { ...flower, status: "화사한 수선화 물결 속 진달래를 찾아보세요 🌼" };
-    }
+                // 생활지수 (자외선)
+                const uvRes = await fetch(`https://apis.data.go.kr/1360000/LivingWthrIdxServiceV3/getUVIdxV3?serviceKey=${WEATHER_KEY}&dataType=JSON&areaNo=${AREA_NO}&time=${ymd}12`);
+                const uvData = await uvRes.json();
+                const uvVal = uvData.response.body.items.item[0].today;
 
-    // 4. [벚꽃 시즌] 4월 1일 ~ 4월 15일 (벚꽃 3 : 수선화 1)
-    else if (today <= 415) {
-        const flower = (seed % 4 === 0) ? getFlowerById("DAFFODIL") : getFlowerById("CHERRY");
-        return { ...flower, status: (flower.id === "CHERRY") ? "벚꽃이 눈처럼 내리는 아름다운 길이에요 🌸" : "벚꽃 아래 노란 수선화가 참 예쁘죠? 💛" };
-    }
+                updateDashboard(temp, pty, uvVal);
+            } catch (e) {
+                document.getElementById("ment").innerText = "날씨에 상관없이 계양의 꽃길은 언제나 열려있어요 🌸";
+            }
+        }
 
-    // 5. [장미 준비] 4월 16일 ~ 5월 14일
-    else if (today < 515) {
-        return { ...getFlowerById("WAITING"), status: "벚꽃이 지고 다음 꽃을 준비하는 시기예요 🌿" };
-    }
+        function updateDashboard(temp, pty, uv) {
+            document.getElementById("temp-val").innerText = temp;
+            
+            // 자외선 텍스트 & 배지
+            let uvText = "보통";
+            if (uv >= 8) uvText = "매우높음";
+            else if (uv >= 6) uvText = "높음";
+            document.getElementById("uv-badge").innerText = `자외선 ${uvText}`;
 
-    // 6. [장미 시즌] 5월 15일 ~ 6월 30일
-    else if (today <= 630) {
-        return { ...getFlowerById("ROSE"), status: "싱그러운 계절의 여왕, 장미를 만나보세요! 🌹" };
-    }
+            // 산책 지수 계산 (가상)
+            let score = 95;
+            if (pty !== "0") score -= 40;
+            if (temp < 5 || temp > 30) score -= 15;
+            if (uv >= 8) score -= 10;
+            document.getElementById("score-badge").innerText = `산책지수 ${score}점`;
 
-    // 7. [여름 대기] 7월 1일 ~ 8월 24일
-    else if (today < 825) {
-        return { ...getFlowerById("WAITING"), status: "뜨거운 여름, 다음 꽃길을 정성껏 가꾸고 있어요 ☀️" };
-    }
+            // 종합 멘트
+            let ment = `오늘 기온은 ${temp}도입니다. `;
+            if (pty !== "0") ment += "비 소식이 있으니 우산을 꼭 챙기세요! ☔";
+            else if (uv >= 6) ment += "햇살이 따가우니 선크림을 꼭 바르고 산책하세요! ☀️";
+            else ment += "날씨가 쾌적해서 꽃길 걷기 참 좋은 날이에요! 🌿";
+            document.getElementById("ment").innerText = ment;
+        }
 
-    // 8. [백일홍 시즌] 8월 25일 ~ 9월 30일 (계양아라온)
-    else if (today <= 930) {
-        return { ...getFlowerById("ZINNIA"), status: "아라온에 백일홍이 만개했어요! 알록달록 꽃길 산책 어떠세요? 🌈" };
-    }
-
-    // 9. [국화 시즌] 10월 1일 ~ 11월 10일 (계양아라온)
-    else if (today <= 1110) {
-        return { ...getFlowerById("MUM"), status: "가을 향기 가득한 국화가 아라온을 수놓았어요 🍂" };
-    }
-
-    // 10. [늦가을~겨울] 11월 11일 ~ 12월 31일
-    else {
-        return { ...getFlowerById("WAITING"), status: "올해의 꽃들이 안녕을 고했어요. 내년 봄을 기다려주세요! ❄️" };
-    }
-
-}
-
-        function renderApp(flower) {
+        function renderFlower(flower) {
             document.getElementById("flower-name").innerText = flower.name;
             document.getElementById("place-name").innerText = flower.place;
             document.getElementById("flower-img").src = "./" + flower.img;
             document.getElementById("flower-status").innerText = flower.status;
-
-            const detailBox = document.getElementById("detail-text");
-            detailBox.innerHTML = `
+            document.getElementById("detail-text").innerHTML = `
                 <div>${flower.guide}</div>
                 ${flower.mapUrl ? `<a href="${flower.mapUrl}" target="_blank" class="map-link-btn">📍 네이버 지도로 길 찾기</a>` : ''}
             `;
         }
 
         function toggleDetail() {
-            const detail = document.getElementById("detail-text");
-            detail.style.display = detail.style.display === "block" ? "none" : "block";
-        }
-
-        async function loadApp() {
-            const now = new Date();
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
-
-            const flower = pickFlower(month, day);
-            renderApp(flower);
-
-            // 기상청 API 연동 (기존 로직 유지)
-            // ... 생략 ...
+            const d = document.getElementById("detail-text");
+            d.style.display = d.style.display === "block" ? "none" : "block";
         }
 
         loadApp();
