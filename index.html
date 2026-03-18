@@ -68,8 +68,54 @@
     </div>
 
     <script>
-        const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
-        const AREA_NO = "2824500000"; // 인천 계양구 코드
+const WEATHER_KEY = "b1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
+const AREA_NO = "2824500000";
+
+async function loadApp() {
+  const now = new Date();
+  const ymd = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+
+  try {
+    const weatherUrl = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${encodeURIComponent(WEATHER_KEY)}&dataType=JSON&numOfRows=200&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`;
+
+    console.log("weatherUrl:", weatherUrl);
+
+    const weatherRes = await fetch(weatherUrl);
+    console.log("weatherRes status:", weatherRes.status);
+
+    const weatherData = await weatherRes.json();
+    console.log("weatherData:", weatherData);
+
+    const items = weatherData?.response?.body?.items?.item || [];
+    const tempItem = items.find(i => i.category === "TMP");
+    const ptyItem = items.find(i => i.category === "PTY");
+
+    if (!tempItem || !ptyItem) {
+      throw new Error("TMP 또는 PTY 데이터가 없습니다.");
+    }
+
+    const temp = tempItem.fcstValue;
+    const pty = ptyItem.fcstValue;
+
+    const uvUrl = `https://apis.data.go.kr/1360000/LivingWthrIdxServiceV3/getUVIdxV3?serviceKey=${encodeURIComponent(WEATHER_KEY)}&dataType=JSON&areaNo=${AREA_NO}&time=${ymd}12`;
+
+    console.log("uvUrl:", uvUrl);
+
+    const uvRes = await fetch(uvUrl);
+    console.log("uvRes status:", uvRes.status);
+
+    const uvData = await uvRes.json();
+    console.log("uvData:", uvData);
+
+    const uvItem = uvData?.response?.body?.items?.item?.[0];
+    const uvVal = uvItem?.today || uvItem?.h0 || 0;
+
+    updateDashboard(temp, pty, uvVal);
+  } catch (e) {
+    console.error("API ERROR:", e);
+    document.getElementById("ment").innerText = "날씨 정보를 불러오지 못했어요 🌸";
+  }
+}
 
         // 꽃 데이터베이스 (생략 없이 취합)
 const flowerDB = [
