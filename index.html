@@ -76,7 +76,7 @@ async function loadApp() {
   const ymd = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
 
   try {
-    const weatherUrl = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${encodeURIComponent(WEATHER_KEY)}&dataType=JSON&numOfRows=200&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`;
+    const weatherUrl = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=200&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`;
 
     console.log("weatherUrl:", weatherUrl);
 
@@ -97,7 +97,7 @@ async function loadApp() {
     const temp = tempItem.fcstValue;
     const pty = ptyItem.fcstValue;
 
-    const uvUrl = `https://apis.data.go.kr/1360000/LivingWthrIdxServiceV3/getUVIdxV3?serviceKey=${encodeURIComponent(WEATHER_KEY)}&dataType=JSON&areaNo=${AREA_NO}&time=${ymd}12`;
+    const uvUrl = `https://apis.data.go.kr/1360000/LivingWthrIdxServiceV3/getUVIdxV3?serviceKey=$serviceKey=${WEATHER_KEY}&dataType=JSON&areaNo=${AREA_NO}&time=${ymd}12`;
 
     console.log("uvUrl:", uvUrl);
 
