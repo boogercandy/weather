@@ -8,29 +8,20 @@
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         * { box-sizing: border-box; }
         body { font-family: 'Pretendard', sans-serif; background: #fffcf9; margin: 0; padding: 20px 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #444; }
-
         .app-container { width: 92%; max-width: 420px; background: white; border-radius: 35px; padding: 35px 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); text-align: center; border: 1px solid #f0f0f0; }
-        
-        /* 날씨 헤더 (소스 2 스타일 적용) */
         .weather-title { font-size: 1.4rem; font-weight: 800; color: #333; margin-bottom: 8px; }
         .weather-title span { color: #ff4d6d; }
         .weather-ment { font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.6; word-break: keep-all; min-height: 3em; }
-
-        /* 이미지 카드 (소스 1의 안정적인 구조) */
         .image-card-container { width: 100%; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); background: #fdf2f4; }
         .image-card-container img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* 추천 박스 (상세 멘트 영역) */
         .recommend-box { background: #fff5f6; border-radius: 30px; padding: 25px; position: relative; border: 1px solid #ffe4e6; }
         .flower-badge { background: #ff9a9e; color: white; padding: 6px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); box-shadow: 0 4px 10px rgba(255,154,158,0.2); }
         .place-title { font-size: 1.6rem; font-weight: 800; color: #ff4d6d; margin: 10px 0; }
-        
         .detail-btn { background: white; border: 1px solid #ff9a9e; color: #ff9a9e; padding: 10px 22px; border-radius: 50px; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         .detail-content { display: none; margin-top: 18px; font-size: 0.92rem; color: #666; line-height: 1.7; text-align: left; background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #f0f0f0; }
-        
-        /* 지도 버튼 (네이버 지도 연결) */
-        .map-link-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; margin-top: 15px; padding: 12px; background: #03C75A; color: white; text-decoration: none; border-radius: 12px; font-size: 0.85rem; font-weight: 700; }
-        
+        .action-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; margin-top: 10px; padding: 12px; color: white; text-decoration: none; border-radius: 12px; font-size: 0.85rem; font-weight: 700; }
+        .bg-naver { background: #03C75A; }
+        .bg-photo { background: #ff4d6d; }
         .footer { margin-top: 35px; font-size: 0.72rem; color: #c8c8c8; }
     </style>
 </head>
@@ -48,96 +39,72 @@
             <div id="place-name" class="place-title">추천 명소</div>
             <button class="detail-btn" onclick="toggleDetail()">🌸 신비의 꽃길 가이드 보기</button>
             <div id="detail-text" class="detail-content">
-                <div id="guide-msg"></div>
-                <a id="map-url" href="#" target="_blank" class="map-link-btn">📍 지도 보기</a>
+                <div id="guide-msg" style="margin-bottom: 15px;"></div>
+                <a id="map-url" href="#" target="_blank" class="action-btn bg-naver">📍 지도 보기</a>
+                <a id="photo-url" href="#" target="_blank" class="action-btn bg-photo">📸 포토갤러리 & 후기 보기</a>
             </div>
         </div>
-
         <div class="footer">계양구청 홍보미디어실 홍보팀</div>
     </div>
 
 <script>
 const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
 
-// 🌸 계양구 사계절 꽃 데이터베이스 (전부 다 채워넣었어!)
 const flowerDB = [
-    { 
-        id: "WAITING", monthStart: 1, dateStart: 1, 
-        name: "개화 대기", place: "계양산", img: "waiting_flower.png", 
-        guide: "아직은 꽃들이 잠을 자고 있어요. ❄️ 조금만 기다리면 예쁜 봄꽃들이 찾아올 거예요!",
-        map: "https://naver.me/Gj6XOEGG", photoUrl: "https://www.gyeyang.go.kr/"
-    },
-    { 
-        id: "DAFFODIL", monthStart: 3, dateStart: 15, 
-        name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", 
-        guide: "노란 수선화가 계양아라온을 물들였어요! 시원한 강바람과 함께 황금빛 꽃길을 걸어보세요. 🌼",
-        map: "https://naver.me/FQVGhxu8", photoUrl: "https://www.instagram.com/explore/tags/계양아라온수선화/"
-    },
-    { 
-        id: "CHERRY", monthStart: 4, dateStart: 1, 
-        name: "벚꽃", place: "서부간선수로", img: "flower_03_cherryblossom.png", 
-        guide: "흩날리는 벚꽃 잎이 울려 퍼지는 서부간선수로! 핑크빛 터널 아래서 인생샷 어때요? 🌸",
-        map: "https://naver.me/xCByNMz0", photoUrl: "https://www.instagram.com/explore/tags/서부간선수로벚꽃/"
-    },
-    { 
-        id: "ROSE", monthStart: 5, dateStart: 20, 
-        name: "장미", place: "계양산 장미원", img: "flower_04_rose.png", 
-        guide: "수만 송이 장미 향기에 취해보고 싶다면? 계양산 장미원이 정답! 가족, 연인과 함께 오세요. 🌹",
-        map: "https://naver.me/5iTI0W6A", photoUrl: "https://www.instagram.com/explore/tags/계양산장미원/"
-    },
-    { 
-        id: "LILY", monthStart: 7, dateStart: 1, 
-        name: "백합", place: "계양꽃마루", img: "flower_05_lily.png", 
-        guide: "순백의 미를 뽐내는 백합과 여름 꽃들이 가득해요! 진한 꽃향기를 맡으며 힐링해보세요. ✨",
-        map: "https://naver.me/54V767Ea", photoUrl: "https://www.instagram.com/explore/tags/계양꽃마루/"
-    },
-    { 
-        id: "ZINNIA", monthStart: 8, dateStart: 15, 
-        name: "백일홍/황화코스모스", place: "계양꽃마루", img: "flower_06_zinnia.png", 
-        guide: "백일 동안 붉게 피는 백일홍과 황금빛 코스모스! 여름부터 가을까지 이어지는 꽃의 향연! 🌻",
-        map: "https://naver.me/54V767Ea", photoUrl: "https://www.instagram.com/explore/tags/계양꽃마루코스모스/"
-    },
-    { 
-        id: "MUM", monthStart: 10, dateStart: 1, 
-        name: "국화", place: "계양구청 광장", img: "flower_07_mum.png", 
-        guide: "가을의 전령사 국화! 구청 광장에 펼쳐진 국화 전시회에서 가을 정취를 듬뿍 느껴보세요. 🍂",
-        map: "https://naver.me/x95S8iXG", photoUrl: "https://www.instagram.com/explore/tags/계양구청국화전시/"
-    }
+    { id: "WAITING", m: 1, d: 1, name: "개화 대기", place: "계양산", img: "waiting_flower.png", guide: "아직은 꽃들이 잠을 자고 있어요. ❄️ 조금만 기다리면 예쁜 봄꽃들이 찾아올 거예요!", map: "https://naver.me/Gj6XOEGG", photo: "https://www.gyeyang.go.kr/" },
+    { id: "DAFFODIL", m: 3, d: 1, name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", guide: "노란 수선화가 계양아라온을 물들였어요! 🌼 시원한 강바람과 함께 황금빛 꽃길을 걸어보세요.", map: "https://naver.me/FQVGhxu8", photo: "https://www.instagram.com/explore/tags/계양아라온수선화/" },
+    { id: "CHERRY", m: 4, d: 1, name: "벚꽃", place: "서부간선수로", img: "flower_03_cherryblossom.png", guide: "흩날리는 벚꽃 잎이 울려 퍼지는 서부간선수로! 🌸 핑크빛 터널 아래서 인생샷 어때요?", map: "https://naver.me/xCByNMz0", photo: "https://www.instagram.com/explore/tags/서부간선수로벚꽃/" },
+    { id: "ROSE", m: 5, d: 20, name: "장미", place: "계양산 장미원", img: "flower_04_rose.png", guide: "수만 송이 장미 향기에 취해보고 싶다면? 🌹 계양산 장미원이 정답! 가족, 연인과 함께 오세요.", map: "https://naver.me/5iTI0W6A", photo: "https://www.instagram.com/explore/tags/계양산장미원/" },
+    { id: "LILY", m: 7, d: 1, name: "백합", place: "계양꽃마루", img: "flower_05_lily.png", guide: "순백의 미를 뽐내는 백합과 여름 꽃들이 가득해요! ✨ 진한 꽃향기를 맡으며 힐링해보세요.", map: "https://naver.me/54V767Ea", photo: "https://www.instagram.com/explore/tags/계양꽃마루/" },
+    { id: "ZINNIA", m: 8, d: 15, name: "백일홍/황화코스모스", place: "계양꽃마루", img: "flower_06_zinnia.png", guide: "백일 동안 붉게 피는 백일홍과 황금빛 코스모스! 🌻 가을까지 이어지는 꽃의 향연!", map: "https://naver.me/54V767Ea", photo: "https://www.instagram.com/explore/tags/계양꽃마루코스모스/" },
+    { id: "MUM", m: 10, d: 1, name: "국화", place: "계양구청 광장", img: "flower_07_mum.png", guide: "가을의 전령사 국화! 🍂 구청 광장에 펼쳐진 국화 전시회에서 가을 정취를 느껴보세요.", map: "https://naver.me/x95S8iXG", photo: "https://www.instagram.com/explore/tags/계양구청국화전시/" }
 ];
 
-// 현재 날짜에 맞는 꽃을 자동으로 골라주는 함수
-function getTodayFlower() {
+async function loadApp() {
     const now = new Date();
     const month = now.getMonth() + 1;
     const date = now.getDate();
     const todayNum = month * 100 + date;
+    const ymd = now.getFullYear() + String(month).padStart(2, "0") + String(date).padStart(2, "0");
 
-    // 거꾸로 체크하면서 현재 날짜보다 시작일이 빠른 가장 최근 꽃을 선택
+    // 1. 현재 날짜에 맞는 꽃 데이터 추출
+    let data = flowerDB[0]; 
     for (let i = flowerDB.length - 1; i >= 0; i--) {
-        const f = flowerDB[i];
-        if (todayNum >= (f.monthStart * 100 + f.dateStart)) {
-            return f;
+        if (todayNum >= (flowerDB[i].m * 100 + flowerDB[i].d)) {
+            data = flowerDB[i];
+            break;
         }
     }
-    return flowerDB[0]; // 아무것도 해당 안 되면 대기 모드
-}
 
-async function loadApp() {
-    const now = new Date();
-    const ymd = now.getFullYear() + String(now.getMonth() + 1).padStart(2, "0") + String(now.getDate()).padStart(2, "0");
-
-    // 1. 자동 꽃 매칭
-    const data = getTodayFlower();
-
+    // 2. 화면에 즉시 뿌리기 (이미지 포함!)
     document.getElementById("flower-name").innerText = data.name;
     document.getElementById("place-name").innerText = data.place;
-    document.getElementById("flower-img").src = "./" + data.img;
+    document.getElementById("flower-img").src = "./" + data.img; 
     document.getElementById("guide-msg").innerText = data.guide;
     document.getElementById("map-url").href = data.map;
-    document.getElementById("photo-url").href = data.photoUrl;
+    document.getElementById("photo-url").href = data.photo;
 
-    // 2. 날씨 호출 (생략... 기존 로직 유지)
+    // 3. 날씨 정보 가져오기
+    try {
+        const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=10&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`;
+        const res = await fetch(url);
+        const json = await res.json();
+        const items = json.response.body.items.item;
+        const temp = items.find(i => i.category === 'TMP').fcstValue;
+
+        document.getElementById("temp-val").innerText = temp + "°";
+        document.getElementById("ment").innerText = (temp < 10) ? "꽃들이 피기엔 아직 조금 쌀쌀해요. 옷 든든히 입고 나들이 가세요! 🧣" : "포근한 봄바람이 불어오네요! 지금 당장 꽃 구경 떠나볼까요? 🌼";
+    } catch (e) {
+        document.getElementById("ment").innerText = "날씨 정보를 불러오지 못했어요. ㅠㅠ";
+    }
 }
+
+function toggleDetail() {
+    const d = document.getElementById("detail-text");
+    d.style.display = (d.style.display === "block") ? "none" : "block";
+}
+
+window.onload = loadApp; // 페이지 로드 시 바로 실행
 </script>
 </body>
 </html>
