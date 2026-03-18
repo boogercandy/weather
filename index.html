@@ -68,7 +68,7 @@
     </div>
 
     <script>
-const WEATHER_KEY = "b1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
+const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
 const AREA_NO = "2824500000";
 
 async function loadApp() {
@@ -197,7 +197,7 @@ const flowerDB = [
             // 2. 날씨 & 생활지수 동시 호출
             try {
                 // 단기예보 (기온/PTY)
-                const weatherRes = await fetch(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=10&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`);
+                const weatherRes = await fetch(`https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=200&pageNo=1&base_date=${ymd}&base_time=0500&nx=54&ny=126`);
                 const weatherData = await weatherRes.json();
                 const temp = weatherData.response.body.items.item.find(i => i.category === "TMP").fcstValue;
                 const pty = weatherData.response.body.items.item.find(i => i.category === "PTY").fcstValue;
@@ -206,6 +206,8 @@ const flowerDB = [
                 const uvRes = await fetch(`https://apis.data.go.kr/1360000/LivingWthrIdxServiceV3/getUVIdxV3?serviceKey=${WEATHER_KEY}&dataType=JSON&areaNo=${AREA_NO}&time=${ymd}12`);
                 const uvData = await uvRes.json();
                 const uvVal = uvData.response.body.items.item[0].today;
+
+                
 
                 updateDashboard(temp, pty, uvVal);
             } catch (e) {
