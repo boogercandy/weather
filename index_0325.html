@@ -72,11 +72,41 @@
 const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
 
 const flowerDB = [
-    { id: "WAITING", m: 1, d: 1, name: "개화 대기", place: "계양산", img: "waiting_flower.png", guide: "꽃들이 잠을 자고 있어요. ❄️", map: "https://naver.me/Gj6XOEGG", photo: "https://www.gyeyang.go.kr/" },
-    { id: "DAFFODIL", m: 3, d: 1, name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", guide: "노란 수선화가 만개했어요! 🌼", map: "https://naver.me/FQVGhxu8", photo: "https://www.instagram.com/explore/tags/계양아라온수선화/" },
-    { id: "AZALEA", m: 3, d: 20, name: "진달래", place: "계양산", img: "flower_02_azalea.png", guide: "분홍빛 진달래를 만나보세요! 🌺", map: "https://naver.me/Gj6XOEGG", photo: "https://www.instagram.com/explore/tags/계양산진달래/" },
-    { id: "CHERRY", m: 4, d: 1, name: "벚꽃", place: "서부간선수로", img: "flower_03_cherryblossom.png", guide: "핑크빛 벚꽃 터널이 열렸어요! 🌸", map: "https://naver.me/xCByNMz0", photo: "https://www.instagram.com/explore/tags/서부간선수로벚꽃/" },
-    { id: "ROSE", m: 5, d: 20, name: "장미", place: "계양산 장미원", img: "flower_04_rose.png", guide: "향긋한 장미 향기를 느껴보세요! 🌹", map: "https://naver.me/5iTI0W6A", photo: "https://www.instagram.com/explore/tags/계양산장미원/" }
+    { id: "WAITING", m: 1, d: 1, name: "개화 대기", place: "계양산", img: "waiting_flower.png", 
+      guide: "꽃들이 잠을 자고 있어요. 다가올 봄을 기대하며 계양산 등산 어떠세요? ", 
+      map: "https://naver.me/Gj6XOEGG", 
+      photo: "https://gyeyang.photo/30" },
+
+    { id: "DAFFODIL", m: 3, d: 1, name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", 
+      guide: `계양아라온에 대규모로 식재된 수선화 밭을 본 적 있어? 
+              3월 말이면 끝없이 펼쳐진 노란 수선화가 우리를 반겨줘! 
+              시원한 강바람 맞으며 노란 꽃길을 걷다 보면 기분까지 맑아질 거야. 
+              신비랑 같이 수선화 꽃내음 맡으러 가보자!수향원에서 조금만 더 걸어오면 끝없이 펼쳐진 수선화밭을 만날수있어 😉`, 
+              map: "https://naver.me/FQVGhxu8", photo: "https://gyeyang.photo/36" },
+
+    { id: "AZALEA", m: 3, d: 20, name: "진달래", place: "계양산", img: "flower_02_azalea.png", 
+      guide: `🌺 분홍빛으로 물든 계양산을 보고 싶다면 3월 25일경을 기억해 줘! 🌺 
+              진달래는 역시 계양산 산책로가 최고인 거 알지? 등산화 끈 꽉 매고 신비랑 같이 진달래 보러 가자!
+              계양산엔 여러 등산로가 있지만 진달래를 만끽하기에는 계양산성박물관에서 시작해서 육각정 지나 하느재로 가는 코스가 최고야!`, 
+              map: "https://naver.me/Gj6XOEGG", 
+              photo: "https://gyeyang.photo/30" },
+
+    { id: "CHERRY", m: 4, d: 1, name: "벚꽃", place: "서부간선수로", img: "flower_03_cherryblossom.png", 
+      guide: `안녕! 계양구에서 가장 아름다운 벚꽃길이 어딘지 알아? 바로 서부간선수로야! 
+              🌸 물길을 따라 길게 이어진 벚꽃 터널은 정말 환상적이지. 바람이 불 때마다 흩날리는 벚꽃비를 맞으며 신비랑 같이 걸어보자! 
+              이번 주말, 카메라 챙겨서 서부간선수로에서 만나! 🌺 
+              진달래는 역시 계양산 산책로가 최고인 거 알지? 등산화 끈 꽉 매고 신비랑 같이 진달래 보러 가자!` , 
+      map: "https://naver.me/xCByNMz0", 
+      photo: "https://gyeyang.photo/35" },
+    
+    { id: "ROSE", m: 5, d: 20, name: "장미", place: "계양산 장미원", img: "flower_04_rose.png", 
+      guide: `장미 향기에 취하고 싶다면 5월 말에서 6월 초에 계양산 장미원을 찾아줘! 🌹
+              수만 송이의 장미가 펼쳐지는 이곳은 사진 맛집으로도 유명해. 
+              부모님 모시고 오거나 데이트 코스로도 완전 강추! 
+              신비가 장미꽃 사이에서 숨바꼭질하고 있을지도 몰라~  
+              만개시즌엔 주차장이 협소하니 대중교통을 이용하는게 좋아 😉`, 
+      map: "https://naver.me/5iTI0W6A", 
+      photo: "https://gyeyang.photo/32" }
 ];
 
 function getFlowerById(id) {
