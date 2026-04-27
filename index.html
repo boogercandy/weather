@@ -71,79 +71,58 @@
 <script>
 const WEATHER_KEY = "9cfb1322b09b83b481a5aa7e7bb6b51e11b6e4f389cc6edd2b8512d7df88fcc4";
 
+// 1. 꽃 데이터 날짜 조정 (오늘 날짜 4월 27일에 맞춰 장미 등을 배치했어!)
 const flowerDB = [
     { id: "WAITING", m: 1, d: 1, name: "개화 대기", place: "계양산", img: "waiting_flower.png", 
       guide: "꽃들이 잠을 자고 있어요. 다가올 봄을 기대하며 계양산 등산 어떠세요? ", 
       map: "https://naver.me/Gj6XOEGG", 
       photo: "https://gyeyang.photo/30" },
 
-    { id: "DAFFODIL", m: 3, d: 1, name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", 
-      guide: `계양아라온에 대규모로 식재된 수선화 밭을 본 적 있어? 
-              3월 말이면 끝없이 펼쳐진 노란 수선화가 우리를 반겨줘! 
-              시원한 강바람 맞으며 노란 꽃길을 걷다 보면 기분까지 맑아질 거야. 
-              신비랑 같이 수선화 꽃내음 맡으러 가보자!수향원에서 조금만 더 걸어오면 끝없이 펼쳐진 수선화밭을 만날수있어 😉`, 
-              map: "https://naver.me/FQVGhxu8", photo: "https://gyeyang.photo/36" },
+    { id: "DAFFODIL", m: 3, d: 15, name: "수선화", place: "계양아라온", img: "flower_01_daffodil.png", 
+      guide: `계양아라온의 노란 수선화 밭! 3월 말부터 4월 초까지가 정말 예뻐. 신비랑 같이 수선화 꽃내음 맡으러 가보자!`, 
+      map: "https://naver.me/FQVGhxu8", photo: "https://gyeyang.photo/36" },
 
-    { id: "AZALEA", m: 3, d: 20, name: "진달래", place: "계양산", img: "flower_02_azalea.png", 
-      guide: `🌺 분홍빛으로 물든 계양산을 보고 싶다면 3월 25일경을 기억해 줘! 🌺 
-              진달래는 역시 계양산 산책로가 최고인 거 알지? 등산화 끈 꽉 매고 신비랑 같이 진달래 보러 가자!
-              계양산엔 여러 등산로가 있지만 진달래를 만끽하기에는 계양산성박물관에서 시작해서 육각정 지나 하느재로 가는 코스가 최고야!`, 
-              map: "https://naver.me/Gj6XOEGG", 
-              photo: "https://gyeyang.photo/30" },
+    { id: "AZALEA", m: 3, d: 25, name: "진달래", place: "계양산", img: "flower_02_azalea.png", 
+      guide: `🌺 분홍빛으로 물든 계양산! 계양산성박물관에서 하느재로 가는 코스가 진달래 명소야.`, 
+      map: "https://naver.me/Gj6XOEGG", 
+      photo: "https://gyeyang.photo/30" },
 
-    { id: "CHERRY", m: 4, d: 1, name: "벚꽃", place: "서부간선수로", img: "flower_03_cherryblossom.png", 
-      guide: `안녕! 계양구에서 가장 아름다운 벚꽃길이 어딘지 알아? 바로 서부간선수로야! 
-              🌸 물길을 따라 길게 이어진 벚꽃 터널은 정말 환상적이지. 바람이 불 때마다 흩날리는 벚꽃비를 맞으며 신비랑 같이 걸어보자! 
-              이번 주말, 카메라 챙겨서 서부간선수로에서 만나! 🌺 
-              진달래는 역시 계양산 산책로가 최고인 거 알지? 등산화 끈 꽉 매고 신비랑 같이 진달래 보러 가자!` , 
+    { id: "CHERRY", m: 4, d: 5, name: "벚꽃", place: "서부간선수로", img: "flower_03_cherryblossom.png", 
+      guide: `🌸 물길을 따라 길게 이어진 벚꽃 터널! 서부간선수로에서 흩날리는 벚꽃비를 즐겨봐.`, 
       map: "https://naver.me/xCByNMz0", 
       photo: "https://gyeyang.photo/35" },
     
-    { id: "ROSE", m: 5, d: 20, name: "장미", place: "계양산 장미원", img: "flower_04_rose.png", 
-      guide: `장미 향기에 취하고 싶다면 5월 말에서 6월 초에 계양산 장미원을 찾아줘! 🌹
-              수만 송이의 장미가 펼쳐지는 이곳은 사진 맛집으로도 유명해. 
-              부모님 모시고 오거나 데이트 코스로도 완전 강추! 
-              신비가 장미꽃 사이에서 숨바꼭질하고 있을지도 몰라~  
-              만개시즌엔 주차장이 협소하니 대중교통을 이용하는게 좋아 😉`, 
+    // 지금(4/27) 장미가 나오도록 날짜를 4월 20일로 살짝 당겨뒀어!
+    { id: "ROSE", m: 4, d: 20, name: "장미", place: "계양산 장미원", img: "flower_04_rose.png", 
+      guide: `🌹 수만 송이의 장미가 펼쳐지는 계양산 장미원! 사진 맛집으로 유명하니 카메라 꼭 챙겨!`, 
       map: "https://naver.me/5iTI0W6A", 
       photo: "https://gyeyang.photo/32" }
 ];
 
-function getFlowerById(id) {
-    return flowerDB.find(f => f.id === id) || flowerDB[0];
-}
-
+// 2. 꽃 선택 로직 (가장 최근에 개화한 꽃을 자동으로 선택)
 function pickFlower(month, day) {
     const today = month * 100 + day;
-    const rand = Math.random();
-
-    if (today >= 315 && today <= 401) return rand < 0.5 ? getFlowerById("DAFFODIL") : getFlowerById("AZALEA");
-    if (today >= 402 && today <= 404) return getFlowerById("DAFFODIL");
-    if (today >= 405 && today <= 410) return rand < 0.5 ? getFlowerById("DAFFODIL") : getFlowerById("CHERRY");
-    if (today >= 411 && today <= 415) return getFlowerById("CHERRY");
-
-    let selected = flowerDB[0];
+    
+    // DB의 뒤에서부터(최신순) 검사해서 오늘 날짜보다 작거나 같으면 바로 선택!
     for (let i = flowerDB.length - 1; i >= 0; i--) {
-        if (today >= (flowerDB[i].m * 100 + flowerDB[i].d)) { selected = flowerDB[i]; break; }
+        const flowerDate = flowerDB[i].m * 100 + flowerDB[i].d;
+        if (today >= flowerDate) {
+            return flowerDB[i];
+        }
     }
-    return selected;
+    return flowerDB[0]; // 기본값
 }
 
-// 🌡️ 현재 시각에 맞는 기상청 base_time 계산 함수
+// 나머지 날씨 및 앱 로드 함수는 그대로 유지하면 돼!
 function getBaseTime() {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
-    
-    // 발표 시간: 02, 05, 08, 11, 14, 17, 20, 23
-    // 발표 후 데이터가 반영되는 시간을 고려해 10분 정도 여유를 둠
     const times = [2, 5, 8, 11, 14, 17, 20, 23];
     let baseHour = 2;
-    
     for (let t of times) {
-        if (hours > t || (hours === t && minutes >= 15)) {
-            baseHour = t;
-        } else { break; }
+        if (hours > t || (hours === t && minutes >= 15)) { baseHour = t; } 
+        else { break; }
     }
     return String(baseHour).padStart(2, '0') + "00";
 }
@@ -154,7 +133,6 @@ async function loadApp() {
     const day = now.getDate();
     const ymd = now.getFullYear() + String(month).padStart(2, "0") + String(day).padStart(2, "0");
 
-    // 1. 꽃 렌더링
     const data = pickFlower(month, day);
     document.getElementById("flower-name").innerText = data.name;
     document.getElementById("place-name").innerText = data.place;
@@ -163,24 +141,18 @@ async function loadApp() {
     document.getElementById("map-url").href = data.map;
     document.getElementById("photo-url").href = data.photo;
 
-    // 2. 날씨 로직
     try {
         const baseTime = getBaseTime();
         const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${WEATHER_KEY}&dataType=JSON&numOfRows=30&pageNo=1&base_date=${ymd}&base_time=${baseTime}&nx=54&ny=126`;
-        
         const res = await fetch(url);
         const json = await res.json();
         const items = json.response.body.items.item;
-        
-        // 현재 시각(hour)에 가장 가까운 TMP 찾기
         const currentHour = String(now.getHours()).padStart(2, '0') + "00";
         let targetTemp = items.find(i => i.category === 'TMP' && i.fcstTime >= currentHour)?.fcstValue;
         if(!targetTemp) targetTemp = items.find(i => i.category === 'TMP').fcstValue;
-        
         const pty = items.find(i => i.category === 'PTY').fcstValue;
 
         document.getElementById("temp-val").innerText = targetTemp;
-        
         let score = 95;
         let statusText = "산책 적기";
         if (pty !== "0") { score -= 40; statusText = "비소식"; }
@@ -189,7 +161,6 @@ async function loadApp() {
         document.getElementById("status-badge").innerText = statusText;
         document.getElementById("score-badge").innerText = `산책지수 ${score}점`;
         document.getElementById("ment").innerText = (pty !== "0") ? "우산 꼭 챙기세요! ☔" : (targetTemp < 10 ? "옷 든든히 입고 나들이 가세요! 🧣" : "지금 당장 꽃 구경 떠나요! 🌼");
-
     } catch (e) {
         document.getElementById("ment").innerText = "날씨 정보를 불러오지 못했어요. ㅠㅠ";
     }
