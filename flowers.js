@@ -122,7 +122,7 @@ const flowerDB = [
     name: "국화",
     place: "계양구청 남측광장",
     img: "flower_09_mum.png",
-    sm: 10, sd: 5,   em: 11, ed: 25,
+    sm: 9, sd: 25,   em: 11, ed: 25,
     guide: "🌼 은은한 국화 향기로 가득한 계양구청 광장! 멋진 국화 조형물과 알록달록 가을꽃 전시회 보러 가볼까?",
     map: "https://naver.me/5L309hV6",
     photo: "https://blog.naver.com/gyeyang_gu/223248220638?trackingCode=blog_bloghome_searchlist"
